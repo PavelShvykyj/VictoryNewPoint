@@ -1,0 +1,72 @@
+.col {
+    padding-left: 0px;
+    padding-right: 0px;   
+}
+
+.navbar-nav li a span{
+    height: 10px;
+    min-height: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    font: 70%;
+}
+
+.navbar-brand {
+    padding-left : 15px
+}
+
+.indicator-col {
+    height: 6px;
+    margin: 0px;
+    padding: 0px
+}
+
+.indicator-row {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px; 
+    padding-bottom: 0px;
+}
+
+.indicator-danger {
+    background-color: red;
+    color: red; 
+}
+
+.indicator-danger:hover {
+    color: white;
+    font-style: italic;
+}
+
+.indicator-good {
+    background-color: ForestGreen;
+    color: ForestGreen;
+}
+
+.indicator-good:hover {
+    color: white;
+    font-style: italic;
+}
+
+.indicator-warning {
+    background-color: Gold;
+    color: Gold;
+    
+}
+
+.indicator-warning:hover {
+    color: white;
+    font-style: italic;
+}
+
+#loggDataText {
+    margin-right: 20px;
+    padding-left: 4px; 
+    padding-right: 4px;
+
+}
+
+#messageText {
+    margin-right: 20px; 
+    margin-left: 20px; 
+}

@@ -1,0 +1,19 @@
+<!--<div class="separate"></div>-->
+<div class="card mt-2">
+    <div class="card-header py-2 text-white bg-secondary ">
+        <h6 class="card-title">Ціни на квитки :</h6>
+    </div>      
+    
+    <ul class="list-group list-group-flush"  *ngFor="let category of priseList.lists">
+       <li class="list-group-item">
+          <h6 class="card-subtitle">{{ category.categorySeatName }}    
+          <span class="card-text text-right" *ngFor="let ticket of category.categoryTickets">
+              <span *ngIf="ticket.categoryTicketPrice != 0" class="categoryTicketName"> {{ticket.categoryTicketName}} </span>
+              <span *ngIf="ticket.categoryTicketPrice != 0" class="categoryTicketPrice"> {{ticket.categoryTicketPrice}}грн. </span>
+          </span>  
+        </h6>
+       </li>
+    </ul>  
+    
+</div>
+

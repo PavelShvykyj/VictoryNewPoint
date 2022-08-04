@@ -1,0 +1,59 @@
+<div class="input-group">
+    <div class="input-group-prepend">
+    <span   class="input-group-text input-group-text-main-menu"  >Дата Фильм Сеанс</span>
+    </div>
+    <!--<input [(ngModel)]="currentDate"
+           (change)='OnChangeDate()'
+           type="date" 
+           name='selectedDate'
+           class="form-control input-main-menu option-header"
+           placeholder="Дата сеанса" >-->
+    
+    <div class="input-group-prepend">
+         <button class="btn btn-outline-secondary bg-light text-dark" type="button" (click) = 'DatePickerChange()' >
+                <i *ngIf= "!pickerHidden" class="fa fa-calendar " aria-hidden="true"></i>
+                <i *ngIf= "pickerHidden" class="fa fa-angle-double-right" aria-hidden="true"></i>
+         </button>
+    </div>       
+    
+    <input 
+           type="button"
+           id="inputGroupPickDay"
+           class="form-control option-header"
+           [hidden] = 'pickerHidden'
+           >
+
+
+    <select [hidden] = '!pickerHidden' #day (change)='OnChangeDate(day.value)' class="custom-select option-header" id="inputGroupSelectDay">
+            <option class="option option-header" option  [value]="currentDays[0].id" >Выбрать день  </option>
+            <option class="option option-item" *ngFor="let day of currentDays" [id]="day.id" [value]="day.id">{{day.title}}</option>
+            <!--<option value="2">Two</option>
+            <option value="3">Three</option>-->
+    </select>       
+    
+
+    <select #movie (change)='OnChangeMovie(movie.value)' class="custom-select option-header" id="inputGroupSelectMovie">
+        <option class="option option-header" option value="-1" >Выбрать Фильм  </option>
+        <option class="option option-item" *ngFor="let movie of currentMovies" [value]="movie.id">{{movie.title}}</option>
+        <!--<option value="2">Two</option>
+        <option value="3">Three</option>-->
+    </select>       
+    
+    <!--<input [(ngModel)]="currentMovie"
+           type="text"
+           name='selectedMovie'
+           class="form-control input-main-menu"
+           placeholder="Фильм">-->
+
+    <select #session (change)='OnChangeSession(session.value)' class="custom-select option-header" id="inputGroupSelectSession">
+        <option class="option option-header" value="-1" >Выбрать сеанс  </option>
+        <option class="option option-item" *ngFor="let session of currentSessions" [value]="session.id">{{session.starts}}</option>
+        <!--<option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>-->
+    </select>       
+               
+
+           
+</div>    
+

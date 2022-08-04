@@ -1,0 +1,30 @@
+
+<div class = "cell" [ngClass]="{'is-disabled': !isAvailable,
+                                'is-selected': (chairStateInternal.s.isSelected) || (chairStateInternal.s.isSelected && (chairStateInternal.s.isSoled || chairStateInternal.s.isReserved || chairStateInternal.s.inReserving)),
+                                'is-reserved': chairStateInternal.s.isReserved && !chairStateInternal.s.isSelected,
+                                'is-unavailable': !(chairStateInternal.s.isSelected) && (chairStateInternal.s.isSoled || chairStateInternal.s.inReserving) && (!chairStateInternal.s.isSelected)}"
+     (click)='OnClick()'
+     (mouseenter) = "Onmouseover()"
+     (mouseleave) = "Onmouseout()"
+     >
+
+  <i *ngIf="!isMousOn" class="p-0 m-0" [ngClass]="{'fa': !chairStateInternal.s.isFree, 
+                 'fa-clock-o': chairStateInternal.s.inReserving, 
+                 'fa-male': chairStateInternal.s.isReserved && !chairStateInternal.s.inReserving,
+                 'fa-street-view': chairStateInternal.s.isSoled && !chairStateInternal.s.inReserving,
+                 'fa-angle-down': chairStateInternal.s.isSelected && chairStateInternal.s.isFree,
+                 'is-selected': (chairStateInternal.s.isSelected) || (chairStateInternal.s.isSelected && chairStateInternal.s.inReserving)
+                  
+                }"
+                 >
+  </i>
+
+
+
+  
+<i *ngIf="isMousOn || !(chairStateInternal.s.isSoled || chairStateInternal.s.isReserved || chairStateInternal.s.inReserving)">{{ chairID }}</i>
+
+
+
+</div>  
+

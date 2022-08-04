@@ -1,0 +1,26 @@
+
+    
+  <div *ngIf="movieInfo" class="card">
+    <div class="card-header text-white bg-secondary py-2">
+      <h6 class="card-title">{{movieInfo.title}}
+          <span *ngIf="movieInfo.format" class="card-text"> {{movieInfo.format}}</span> 
+          <span *ngIf="movieInfo.duration" class="card-text movie-duration">, {{movieInfo.duration}}</span>  
+      </h6>
+    </div>      
+    <!--<div class="card-body py-1">
+        <span class="card-text">Формат</span><span class="card-text movie-format"> {{movieInfo.format}}</span> 
+    </div>        
+    <div class="card-body py-1">
+        <span *ngIf="movieInfo.duration" class="card-text">Час: </span><span class="card-text movie-duration">{{movieInfo.duration}}</span>
+    </div>-->        
+    
+    <div *ngIf="movieInfo.genre" class="card-footer text-muted">
+        {{movieInfo.genre}}
+    </div>
+  </div>  
+    
+
+  <div *ngIf="!movieInfo"  >
+      Не выбран фильм.
+  </div>
+

@@ -1,0 +1,75 @@
+<p class="my-0 py-0" >
+  <button class="btn btn-dark my-0" (click)='Resete()'></button>
+  <messages [historyLenth]=5 class="my-0"> </messages>
+</p>
+
+<form class="ml-1" [formGroup]='form'>
+  <div class="input-group input-group-sm my-2">
+    <input formControlName='phone' 
+           placeholder="тел." 
+           type="text"
+           (focus)=InputOnFocus()
+           class="form-control"
+           [ngClass]="{'bg-danger' : !phone.valid && 
+                                      (
+                                       action==FORM_ACTIONS.print    ||
+                                       action==FORM_ACTIONS.pay      || 
+                                       action==FORM_ACTIONS.searchByPhone || 
+                                       action==FORM_ACTIONS.reserve 
+                                      )}">
+    <div class="input-group-append">
+      <button class="btn"
+              [ngClass]="{'btn-danger': !GetFormValidStatus() && action == FORM_ACTIONS.searchByPhone,
+                          'btn-dark'  :  GetFormValidStatus() || action != FORM_ACTIONS.searchByPhone}"
+              type="button"
+              (click)=SearchByPhone() ><i class="fa fa-search"></i></button>
+    </div>
+                                  
+
+  </div>
+
+  <div class="input-group input-group-sm my-2">
+    <input placeholder="номер брони"
+           formControlName='secretCode'
+           type="text"
+           (focus)=InputOnFocus()
+           class="form-control"
+           [ngClass]="{'bg-danger' : !secretCode.valid && 
+                                     (
+                                      action==FORM_ACTIONS.print  ||
+                                      action==FORM_ACTIONS.pay    || 
+                                      action==FORM_ACTIONS.search 
+                                     )}">
+    
+    
+    <div class="input-group-append">
+      <button class="btn"
+              [ngClass]="{'btn-danger': !GetFormValidStatus() && action == FORM_ACTIONS.search,
+                          'btn-dark'  :  GetFormValidStatus() || action != FORM_ACTIONS.search}"
+              type="button"
+              (click)=Search() ><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+
+
+  <div class="btn-group btn-group-sm my-2" role="group" aria-label="rerserve functons">
+    <button type="button" 
+            class="btn"
+            disabled = true
+            [ngClass]="{'btn-danger' : !GetFormValidStatus() && action == FORM_ACTIONS.print,
+                        'btn-dark'   :  GetFormValidStatus() || action != FORM_ACTIONS.print}"
+            (click)=Print()><i class="fa fa-print"></i></button>
+    <button type="button"
+            class="btn"
+            [ngClass]="{'btn-danger' : !GetFormValidStatus() && action == FORM_ACTIONS.reserve,
+                        'btn-dark'   :  GetFormValidStatus() || action != FORM_ACTIONS.reserve}"
+            (click)=Reserve()><i class="fa fa-male"></i></button>
+    <button type="button"
+            class="btn"
+            [ngClass]="{'btn-danger' : !GetFormValidStatus() &&  action == FORM_ACTIONS.pay,
+                        'btn-dark'   :  GetFormValidStatus() ||  action != FORM_ACTIONS.pay}"
+            (click)=Pay()><i class="fa fa-cc-visa"></i></button>
+  </div>
+  
+</form>
+

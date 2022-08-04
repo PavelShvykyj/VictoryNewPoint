@@ -1,0 +1,680 @@
+
+<div  class="container-fluid container-main unprintable">
+  <div class="row unprintable "> <!-- гланое меню  -->
+    <div class="col" id="MainMenuCol">
+        <movie-selector (sessionDataChange) = "OnSessionDataChange($event)"></movie-selector>
+    </div>
+  </div>
+  <div class="row unprintable "> <!-- основная область  -->
+    <!--  функциональные кнопки и билеты  -->
+    <div class="col align-self-start justify-content-center " id="FuncMenuCol">
+      <!-- кнопки функционального меню  -->
+      <div class="row"> 
+        <div class="col align-self-start justify-content-center px-0" >
+            <div   class="card mt-2 border border-secondary">
+                <!--<div class="card-header py-2 text-white bg-secondary">
+                 
+                </div>-->      
+        
+                <div class="card-body px-1 py-2">
+                    <messages [historyLenth]=4> </messages>
+                    <div class="btn-group-vertical btn-block" role="group" aria-label="Function Menu">
+                    <button type="button" [disabled]="showStatus != showHallStatus.Defoult" class="btn btn-secondary mb-1" (click) = "StartSaleSelected()">Начать продажу</button>
+                    <!--<button type="button" [disabled]="true || showStatus == showHallStatus.Cancel || showStatus == showHallStatus.Reserving || showStatus == showHallStatus.Search" class="btn btn-secondary mb-1" (click) = "FinishSaleSelected()">Завершить продажу</button>-->
+                    <button type="button" [disabled]="showStatus == showHallStatus.Cancel || showStatus == showHallStatus.Reserving" class="btn btn-secondary mb-1" (click) = "PrintSelected()">Повторная печать</button>
+                    <button type="button" [disabled]="showStatus == showHallStatus.StartSale" class="btn btn-secondary mb-1" (click) = "SearchOperationForm()">Поиск</button>
+                    <searching-operations class="fool-wight my-1 py-0" *ngIf="showStatus == showHallStatus.Search"
+                        (ActionSearchEmmiter)  = "OnActionSearch($event)" 
+                        (ActionSearchByPhoneEmmiter)  = "OnActionSearchByPhone($event)" 
+                        (ActionReseteEmmiter) = "OnActionResete()" 
+                    ></searching-operations>    
+                    
+                    <button type="button" [disabled]="showStatus == showHallStatus.StartSale" class="btn btn-secondary mb-1" (click) = "ReserveOperationForm()">Бронь</button>
+                    <reserving-operations class="fool-wight my-1 py-0" *ngIf="showStatus == showHallStatus.Reserving" 
+                        (ActionSearchEmmiter)  = "OnActionSearch($event)" 
+                        (ActionSearchByPhoneEmmiter)  = "OnActionSearchByPhone($event)" 
+                        (ReserveActionPrintEmmiter)   = "OnReserveActionPrint($event)" 
+                        (ReserveActionPayEmmiter)     = "OnReserveActionPay($event)" 
+                        (ReserveActionReserveEmmiter) = "OnReserveActionReserve($event)" 
+                        (ActionReseteEmmiter) = "OnActionResete()" 
+                    ></reserving-operations>
+                    <button type="button" [disabled]="showStatus == showHallStatus.StartSale " class="btn btn-secondary mb-1" (click) = "CancelOperationForm()">Отмена билетов</button>
+                    <cancel-operation class="fool-wight" *ngIf="showStatus == showHallStatus.Cancel"
+                        (CancelActionCancelEmmiter) = "OnCancelActionCancel($event)"
+                        (ActionSearchEmmiter)  = "OnActionSearch($event)" 
+                        (ActionSearchByPhoneEmmiter)  = "OnActionSearchByPhone($event)"
+                        (CancelActionReseteEmmiter) = "OnCancelActionResete()" >
+                    </cancel-operation>
+                    
+                    <button type="button" [disabled]="showStatus != showHallStatus.Defoult " class="btn btn-secondary mb-1" (click) = "ExecuteQueue()">Данные на сайт</button>
+                    <button type="button" [disabled]="showStatus != showHallStatus.Defoult " class="btn btn-secondary mb-1" (click) = "Refresh1CData()">Данные на 1C</button>
+                    <button type="button" [disabled]="showStatus == showHallStatus.StartSale" class="btn btn-secondary mb-1" (click) = "RefreshHallState()">Обновить</button>
+                    <!--<button type="button" class="btn btn-secondary btn-funk-menu">Действие 1</button>
+                    <button type="button" class="btn btn-secondary btn-funk-menu">Действие 1</button>-->
+                </div>
+                </div>
+            </div>  
+        </div>    
+      </div>    
+
+      <!-- SHOP  -->
+      <div class="row">
+        <div class="col align-self-start justify-content-center px-0">
+            <app-order></app-order>
+        </div>
+      </div> 
+
+      <!-- выбранные билеты  -->
+      <div class="row"> 
+        <div class="col align-self-start justify-content-center px-0">
+            <div *ngIf="chairsInWork.length != 0"  class="card mt-2">
+                <div class="card-header py-2 text-white bg-danger">
+                    Ваші квитки :
+                </div>      
+                <ul class="list-group list-group-flush">
+                    <li  *ngFor="let chairInWork of chairsInWork" class="list-group-item border border-danger py-1">    
+                                <span class="card-text">ряд {{chairInWork.c.r}}</span>
+                                <span class="card-text">місце {{chairInWork.c.c}}</span>
+                                <span class="card-text">ціна </span>
+                                <span *ngIf="chairInWork.p!=0 && !chairInWork.prices" class="card-text">{{chairInWork.p}} </span>
+                                <div class="btn-group btn-group-sm" role="group" >
+                                    <button  *ngFor="let priceElement of chairInWork.prices" [disabled]='chairInWork.s.inReserving || chairInWork.s.isSoled || chairInWork.s.isReserved' (click)="SelectPriceChairInWork(priceElement.price,priceElement.idTicketCategory,chairInWork)" [ngClass]="{'btn' : true, 'btn-danger' : priceElement.price==chairInWork.p, 'btn-secondary' : priceElement.price!=chairInWork.p  }"   >{{priceElement.price }}</button>
+                                </div>
+                                <span class="card-text">грн. </span>
+                    </li> 
+                </ul>       
+                <div class="card-footer text-white bg-danger">
+                    Разом : {{ChairsInWorkTotalSumm()}}грн.
+                </div>
+            </div>  
+        </div>    
+      </div>    
+
+    
+    </div>
+    <!-- разметка зала  -->
+    <div class="col-8 " id="HallCol">
+      <!-- "Экран"  -->  
+      <div class="row justify-content-center"> 
+        <div class="col" >
+          <div id="screen">ЭКРАН</div>
+        </div>  
+      </div>           
+      <!-- "таблица"  -->  
+      <div class="row align-items-center">
+        <div class="col align-self-center justify-content-center">
+          
+          <table  class="table-hall">
+            <tbody>
+              <tr>
+                  <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[1] }"  colspan=2>1</td>
+                  <td class="table-hall-column-empty table-hall-column"></td>
+                  <td *ngFor="let key of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" 
+                      class="table-hall-column-color1 table-hall-column" colspan=2
+                      
+                      (mouseenter) = "OnmouseoverHallColumn(1)"
+                      (mouseleave) = "OnmouseoutHallColumn(1)"
+                  >
+                      
+                    <hall-chair  [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]"  [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" (chairSelectStatusChange) = "OnChairSelectStatusChange($event)"   [chairID]="key" [rowID]= "1" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)">  </hall-chair>
+                  </td>
+                  <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[1] }" colspan=2>1</td>
+              </tr>
+              
+              <tr>
+                  <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[2] }" colspan=2>2</td>
+                  <td *ngFor="let key of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" 
+                      class="table-hall-column-color1 table-hall-column" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(2)"
+                      (mouseleave) = "OnmouseoutHallColumn(2)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]= "2" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                  </td>
+                  <td class="table-hall-column-empty table-hall-column"></td>
+                  <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[2] }" colspan=2>2</td>
+              </tr>
+              
+              <tr>
+                  <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[3] }" colspan=2>3</td>
+                  <td class="table-hall-column-empty table-hall-column"></td>
+                  <td *ngFor="let key of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" 
+                      class="table-hall-column-color1 table-hall-column" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(3)"
+                      (mouseleave) = "OnmouseoutHallColumn(3)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]= "3" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                  </td>
+                  <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[3] }" colspan=2>3</td>
+              </tr>
+              
+              <tr *ngFor="let rowKey of [4,5,6,7,8,9,10,11,12,13]">
+                <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[rowKey] }" colspan=2>{{ rowKey }}</td>
+                
+                <ng-container *ngIf="rowKey == 4 || rowKey == 6 || rowKey == 8 || rowKey == 10 || rowKey == 12">
+                    <td *ngFor="let key of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" 
+                         class="table-hall-column-color2 table-hall-column" colspan=2
+                         (mouseenter) = "OnmouseoverHallColumn(rowKey)"
+                         (mouseleave) = "OnmouseoutHallColumn(rowKey)"
+                         >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="rowKey" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                    <td class="able-hall-column-empty table-hall-column"></td>
+                </ng-container>
+                <ng-container *ngIf="rowKey == 5 || rowKey == 7 || rowKey == 9 || rowKey == 11 || rowKey == 13">
+                    <td class="able-hall-column-empty table-hall-column"></td>
+                    <td *ngFor="let key of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" 
+                         class="table-hall-column-color2 table-hall-column" colspan=2
+                         (mouseenter) = "OnmouseoverHallColumn(rowKey)"
+                         (mouseleave) = "OnmouseoutHallColumn(rowKey)"
+                         >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="rowKey" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                </ng-container>
+                <td class="table-hall-column-empty table-hall-column side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[rowKey] }" colspan=2>{{ rowKey }}</td>
+              </tr>
+              
+              <tr>
+                <td  class="table-hall-column" id="TableHallColBalcony" colspan=43>БАЛКОН</td>
+              </tr>
+              
+            </tbody>
+          </table>
+          <!-- Разметка балкон -->
+          <table  class="table-hall">
+            <tbody>     
+              <tr>
+                    <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[14] }" colspan=2 rowspan=2>14</td>
+                  
+                    <td class="table-hall-column-empty table-hall-column-b2" colspan=2></td>
+                    <td class="table-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                    <td class="table-hall-column-empty table-hall-column-b2" ></td> 
+
+                    <td *ngFor="let key of [3,4,5]" 
+                        class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                        (mouseenter) = "OnmouseoverHallColumn(14)"
+                        (mouseleave) = "OnmouseoutHallColumn(14)"
+                     >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                    <td class="table-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                    
+                    <td *ngFor="let key of [6,7,8]" 
+                        class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                        (mouseenter) = "OnmouseoverHallColumn(14)"
+                        (mouseleave) = "OnmouseoutHallColumn(14)"
+                     >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                    <td class="table-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                    
+                    <td *ngFor="let key of [9,10]" 
+                        class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                        (mouseenter) = "OnmouseoverHallColumn(14)"
+                        (mouseleave) = "OnmouseoutHallColumn(14)"
+                     >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                    <td class="table-hall-column-empty table-hall-column-b2" colspan=2></td> 
+  
+                    <td *ngFor="let key of [11,12]" 
+                        class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                        (mouseenter) = "OnmouseoverHallColumn(14)"
+                        (mouseleave) = "OnmouseoutHallColumn(14)"
+                     >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                    <td class="table-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                    <td *ngFor="let key of [13,14,15]" 
+                        class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                        (mouseenter) = "OnmouseoverHallColumn(14)"
+                        (mouseleave) = "OnmouseoutHallColumn(14)"
+                     >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                    <td class="table-hall-column-empty table-hall-column-b2" ></td> 
+
+                    <td *ngFor="let key of [16,17,18]" 
+                        class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                        (mouseenter) = "OnmouseoverHallColumn(14)"
+                        (mouseleave) = "OnmouseoutHallColumn(14)"
+                     >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                    </td>
+                    <td *ngFor="let key of [1,2,3]" class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                    <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[14] }" colspan=2 rowspan=2>14</td>
+              </tr>
+                
+              <tr>
+                <!--<td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[15] }" colspan=2>Б2</td>-->  
+                <td  class="table-hall-column-empty table-hall-column-b2" colspan=2></td>
+                <td  class="table-hall-column-empty table-hall-column-b2" ></td>
+                    
+                <td  class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                (mouseenter) = "OnmouseoverHallColumn(14)"
+                (mouseleave) = "OnmouseoutHallColumn(14)"
+                >
+                    <hall-chair [isAvailable] = "chairsInfo['1r14']" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="1" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                </td>
+                
+                <td  class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                (mouseenter) = "OnmouseoverHallColumn(14)"
+                (mouseleave) = "OnmouseoutHallColumn(14)"
+                >
+                    <hall-chair [isAvailable] = "chairsInfo['2r14']" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="2" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                </td>
+                
+                <td *ngFor="let key of [1,2,3]" class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+                <td  class="table-hall-column-empty table-hall-column-b2" ></td>
+
+                <td *ngFor="let key of [1,2,3,4,5,6,7,8,9,10,11,12]" class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+                <td  class="table-hall-column-empty table-hall-column-b2" ></td>
+                <td *ngFor="let key of [1,2]" class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+                <td  class="table-hall-column-empty table-hall-column-b2" ></td>
+                <td  class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                (mouseenter) = "OnmouseoverHallColumn(14)"
+                (mouseleave) = "OnmouseoutHallColumn(14)"
+                >
+                    <hall-chair [isAvailable] = "chairsInfo['19r14']" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="19" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                </td>
+                <td  class="table-hall-column-color3 table-hall-column-b2" colspan=2
+                (mouseenter) = "OnmouseoverHallColumn(14)"
+                (mouseleave) = "OnmouseoutHallColumn(14)"
+                >
+                    <hall-chair [isAvailable] = "chairsInfo['20r14']" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="20" [rowID]="14" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>
+                </td>
+                
+                <td *ngFor="let key of [1,2]" class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+                <!--<td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[15] }" colspan=2>14</td>-->
+              </tr>
+
+              <tr>
+                <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[15]}" colspan=2>15</td>  
+
+                  <td *ngFor="let key of [1,2,3,4,5]" class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" ></td>
+
+                  <td *ngFor="let key of [1,2]" 
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(15)"
+                      (mouseleave) = "OnmouseoutHallColumn(15)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="15" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                  <td *ngFor="let key of [3,4]" 
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(15)"
+                      (mouseleave) = "OnmouseoutHallColumn(15)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="15" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                  <td *ngFor="let key of [5,6]" 
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(15)"
+                      (mouseleave) = "OnmouseoutHallColumn(15)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="15" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                  <td *ngFor="let key of [7,8]" 
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(15)"
+                      (mouseleave) = "OnmouseoutHallColumn(15)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="15" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                  <td *ngFor="let key of [9,10]" 
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(15)"
+                      (mouseleave) = "OnmouseoutHallColumn(15)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="15" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                  <td *ngFor="let key of [1,2,3,4,5]" class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+                  <td  class="able-hall-column-empty table-hall-column-b2"></td>
+                
+                 <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[15]}" colspan=2>15</td>  
+              </tr>
+
+              <tr>
+                <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[16]}" colspan=2>16</td>
+                  <td *ngFor="let key of [1,2]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(16)"
+                      (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2"></td>
+
+                  <td *ngFor="let key of [3,4]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(16)"
+                      (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                  <td *ngFor="let key of [5,6]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(16)"
+                       (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [7,8]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(16)"
+                       (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  
+                  <td *ngFor="let key of [9,10]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(16)"
+                       (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [11,12]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(16)"
+                       (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td>                   
+                
+                  <td *ngFor="let key of [13,14]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(16)"
+                       (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  
+                  <td *ngFor="let key of [15,16]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(16)"
+                       (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2"></td> 
+
+                  <td *ngFor="let key of [17,18]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(16)"
+                       (mouseleave) = "OnmouseoutHallColumn(16)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="16" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[16]}" colspan=2>16</td>
+              </tr>
+
+              <tr>
+                <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[17]}" colspan=2>17</td>
+                  <td *ngFor="let key of [1,2]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(17)"
+                      (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2"></td>
+
+                  <td *ngFor="let key of [3,4]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(17)"
+                      (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                    <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td  class="able-hall-column-empty table-hall-column-b2" colspan=2></td>
+
+                  <td *ngFor="let key of [5,6]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(17)"
+                       (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [7,8]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(17)"
+                       (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  
+                  <td *ngFor="let key of [9,10]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(17)"
+                       (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [11,12]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(17)"
+                       (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td>                   
+                
+                  <td *ngFor="let key of [13,14]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(17)"
+                       (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  
+                  <td *ngFor="let key of [15,16]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(17)"
+                       (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" ></td> 
+
+                  <td *ngFor="let key of [17,18]"
+                       class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                       (mouseenter) = "OnmouseoverHallColumn(17)"
+                       (mouseleave) = "OnmouseoutHallColumn(17)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="17" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[17]}" colspan=2>17</td>
+              </tr>
+
+              <tr>
+                  <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[18]}" colspan=2>18</td>
+                  <td *ngFor="let key of [1,2]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" ></td> 
+
+                  <td *ngFor="let key of [3,4]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  <td class="able-hall-column-empty table-hall-column-b2" ></td> 
+
+                  <td *ngFor="let key of [5,6]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [7,8]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [9,10]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [11,12]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  
+                  <td class="able-hall-column-empty table-hall-column-b2"></td> 
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+
+                  <td *ngFor="let key of [13,14]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18"  [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  <td class="able-hall-column-empty table-hall-column-b2" ></td> 
+
+                  <td *ngFor="let key of [15,16]"
+                      class="table-hall-column-color4 table-hall-column-b2" colspan=2
+                      (mouseenter) = "OnmouseoverHallColumn(18)"
+                      (mouseleave) = "OnmouseoutHallColumn(18)"
+                  >
+                      <hall-chair [isAvailable] = "chairsInfo[hallchair.chairID+'r'+hallchair.rowID]" [showStatus] = showStatus (chairSelectStatusChange) = "OnChairSelectStatusChange($event)" [chairID]="key" [rowID]="18" [id]="hallchair.chairID+'r'+hallchair.rowID" #hallchair (mouseenter) = "OnmouseoverHallChair(hallchair)" (mouseleave) = "OnmouseleaveHallChair(hallchair)"></hall-chair>  
+                  </td>
+                  
+                  <td class="able-hall-column-empty table-hall-column-b2" colspan=2></td> 
+                  <td class="table-hall-column-empty table-hall-column-b2 side-column" [ngClass]="{'side-column-oninternalhower': mouseStatusCoverByRow[18]}" colspan=2>18</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="table-hall-legend">
+            <div class="table-hall-legend-text">
+              <i class="fa fa-street-view table-hall-legend-icon" aria-hidden="true">  </i>
+              квиток придбано
+            </div> 
+
+            <div class="table-hall-legend-text">
+              <i class="fa fa-male table-hall-legend-icon" aria-hidden="true">  </i>
+              квиток заброньовано
+            </div>
+
+            <div class="table-hall-legend-text">
+              <i class="fa fa-clock-o table-hall-legend-icon" aria-hidden="true"></i>
+              йде бронювання 
+            </div> 
+          </div>       
+        </div>  
+      </div>
+    </div>
+  
+    <!-- легенда - цвета - цены инфо о фильме  -->
+    <div class="col  align-self-start justify-content-center px-3 h-100" id="LegendMovieCol">
+       <div class="row "> 
+            <div class="col align-self-start justify-content-center px-0">
+                <movie  *ngIf="sessionData.currentMovie" [movieInfo] = "sessionData.currentMovie"></movie>
+            </div>    
+       </div>    
+
+       <div class="row " > 
+            <div class="col align-self-start justify-content-center px-0">
+                <movie-price *ngIf="sessionData.currentSession" [hallInfo]="hallInfo" [sessionInfo]="sessionData.currentSession" > </movie-price>
+            </div>    
+       </div>    
+       <div class="row " > 
+        <div class="col align-self-start justify-content-center px-0">
+            <app-order-total></app-order-total>
+        </div>
+       </div>
+
+       <div class="row "> 
+        
+            
+        <div class="col align-self-start justify-content-center px-0">
+                <div *ngIf="chairsInWork.length != 0"  class="card mt-2">
+                    <!--<div class="card-header py-2 text-white bg-danger">
+                        Ваші квитки :
+                    </div>      
+                    <ul class="list-group list-group-flush">
+                        <li  *ngFor="let chairInWork of chairsInWork" class="list-group-item border border-danger py-1">    
+                                    <span class="card-text">ряд {{chairInWork.c.r}}</span>
+                                    <span class="card-text">місце {{chairInWork.c.c}}</span>
+                                    <span class="card-text">ціна </span>
+                                    <div class="btn-group btn-group-sm" role="group" >
+                                        <button *ngFor="let priceElement of chairInWork.prices" (click)="SelectPriceChairInWork(priceElement.price,chairInWork)" [ngClass]="{'btn' : true, 'btn-danger' : priceElement.price==chairInWork.p, 'btn-secondary' : priceElement.price!=chairInWork.p  }"   >{{priceElement.price }}</button>
+                                    </div>
+                                    <span class="card-text">грн. </span>
+                        </li> 
+                    </ul>-->       
+                    <div class="card-footer text-white bg-danger">
+                        Разом до сплати: {{ChairsInWorkTotalSumm()}}грн.
+                    </div>
+                </div>  
+            </div>    
+       </div>   
+
+    </div>
+  </div>
+</div>
+
+<!-- областьпечати печатет без class="printable" -->
+<div class="printable" id="forprint">    
+    <ticket-print-wiev></ticket-print-wiev>
+</div>
+
+

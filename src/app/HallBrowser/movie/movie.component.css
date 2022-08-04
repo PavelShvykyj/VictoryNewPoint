@@ -1,0 +1,29 @@
+.movie-header {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+p {
+    font-weight: 200; 
+    height: 10px
+}
+
+.movie-format {
+    font-weight: 400;
+    color: brown;
+    font-size: 100%;
+    font-stretch: expanded}
+
+.movie-duration {
+    font-weight: 400;
+    font-size: 80%;
+    font-stretch: condensed;
+    
+}
+
+.movie-genre {
+    font-weight: 400;
+    font-size: 80%;
+    font-stretch: condensed;
+    background-color: lightgray;
+}

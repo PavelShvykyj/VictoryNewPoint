@@ -1,0 +1,43 @@
+
+
+<nav class="navbar navbar-light bg-light ">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button class="btn btn-dark mx-1" (click) = "ClearLog()"> Clear log </button>
+        <button class="btn btn-dark mx-1" (click) = "SaveLog()" > Save log </button>
+    </div>
+    
+    <form class="form-inline">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Take х log files</span>
+        </div>
+        <input [(ngModel)]="takeLogFiles" required name="takeLogFiles" type="text" class="form-control" placeholder="enter number of files" aria-label="Username" aria-describedby="basic-addon1">
+        
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2">,skipping y log files</span>
+          </div>
+        <input [(ngModel)]="skipLogFiles" name="skipLogFiles" type="text" class="form-control" placeholder="enter number of files" aria-label="Username" aria-describedby="basic-addon1">
+  
+        <div class="input-group-append" id="button-addon1">
+            <button class="btn btn-outline-dark" type="button" (click) = "PreviousFile()">prev</button>
+            <button class="btn btn-outline-dark" type="button" (click) = "NextFile()">next</button>
+            <button class="btn btn-dark" type="button" (click) = "GetLastLogFiles()">Take</button>
+        </div>
+    </div>
+    
+    </form>
+  </nav>
+
+<div *ngFor="let logg of loggObj"> 
+        <span class="mx-2"> {{ logg.message_date  | date:'fullTime' }} </span>
+        <span class="mx-2"> {{ LoggMessageTypes[logg.message_type] }} </span>
+        <span class="mx-2"> {{ logg.message_name }} </span>
+        <div *ngFor="let p of logg.message_parametr" class="mx-2"> 
+            {{ p.name }} 
+            <ul>
+                <li *ngFor="let pair of p.body | mapToIterable ">
+                     {{ pair.key }} {{ pair.value }}
+                </li>    
+            </ul>
+        </div>    
+</div>

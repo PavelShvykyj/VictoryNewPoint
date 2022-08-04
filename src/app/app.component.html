@@ -1,0 +1,67 @@
+
+<!--<app-loggin (loggOn) = "loggOnTrigger($event)"></app-loggin> 
+событие использовалось для запуска обновления токена -перенесли в сервис-->
+
+<div class="container-fluid  unprintable">
+    <div class="row">
+        <div class="col">
+            <nav class="navbar-nav navbar-expand-sm navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">Victory</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!--<button class="btn m-1" (click) = "Alert1CdataIncome()">s</button> 
+                <button class="btn" (click) = "Generate1CdataIncome()">f</button>--> 
+
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" routerLink = "">Login <span class="sr-only">(current)</span></a>
+                        <a class="nav-item nav-link" routerLink = "Log">Log</a>
+                        <a class="nav-item nav-link" routerLink = "Hall">Hall</a>
+                    </div>
+                    
+                </div>
+                
+                <clock class="navbar-text"></clock>
+
+                <span class=" navbar-text" id="messageText" >
+                    <messages  [historyLenth]=1 > </messages>
+                </span>
+
+
+                <span id="loggDataText"
+                      class="navbar-text"
+                      [ngClass]="{'indicator-danger' : currentBackEndName=='Nothing',
+                      'indicator-good'    : currentBackEndName=='WEB',
+                      'indicator-warning' : currentBackEndName=='1C'}">
+                    logged as {{currentUserName}} on {{ currentBackEndName }}
+                </span>
+                
+                
+            </nav>
+        </div>
+    </div>
+    <div class="row indicator-row">
+        <div class="col indicator-col"
+         [ngClass]="{'indicator-danger' : currentBackEndName=='Nothing',
+                    'indicator-good'    : currentBackEndName=='WEB',
+                    'indicator-warning' : currentBackEndName=='1C'}">
+        </div>
+    </div>
+</div>
+<!--<input #el hidden=true type="text" id="External1CValue" value="empty"  (click)="OnExternal1CValueChange(el.value)">-->
+<input #el hidden=true type="text" id="PrintTickets" value="empty"  (click)="OnExternal1CValueChange(el)">
+<input #GetGlobalParametrs hidden=true type="text" id="GetGlobalParametrs" value="empty"  (click)="OnExternal1CValueChange(GetGlobalParametrs)">
+<input #SetDataFrom1C hidden=true type="text" id="SetDataFrom1C" value="empty"  (click)="OnInit1CDataIncome(SetDataFrom1C)">
+<input #HallInfo hidden=true type="text" id="HallInfo" value="empty"  (click)="OnExternal1CValueChange(HallInfo)">
+<input #SessionsInfo hidden=true type="text" id="SessionsInfo" value="empty"  (click)="OnExternal1CValueChange(SessionsInfo)">
+<input #HallState hidden=true type="text" id="HallState" value="empty"  (click)="OnExternal1CValueChange(HallState)">
+<input #BuferState hidden=true type="text" id="BuferState" value="empty"  (click)="OnExternal1CValueChange(BuferState)">
+<input #CassOperation hidden=true type="text" id="CassOperation" value="empty"  (click)="OnExternal1CValueChange(CassOperation)">
+<input #ShopSale hidden=true type="text" id="ShopSale" value="empty"  (click)="OnExternal1CValueChange(ShopSale)">
+<router-outlet></router-outlet>
+
+
+
+
+

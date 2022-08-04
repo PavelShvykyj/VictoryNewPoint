@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<V8Exch:_1CV8DtUD xmlns:V8Exch="http://www.1c.ru/V8/1CV8DtUD/" xmlns:v8="http://v8.1c.ru/data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<V8Exch:Data>
+		<CatalogObject.Право>
+			<Ref>31f22877-578f-11e9-9fc9-f079597092fe</Ref>
+			<DeletionMark>false</DeletionMark>
+			<Code>000000001</Code>
+			<Description>AfterSessionStart</Description>
+			<Параметры>
+				<Row>
+					<ИмяПараметра>MinutesLeft</ИмяПараметра>
+					<ЗначениеПараметра>5</ЗначениеПараметра>
+				</Row>
+			</Параметры>
+			<Действия>
+				<Row>
+					<Действие>Продажа</Действие>
+				</Row>
+				<Row>
+					<Действие>Бронирование</Действие>
+				</Row>
+				<Row>
+					<Действие>Отмена</Действие>
+				</Row>
+				<Row>
+					<Действие>Выбор</Действие>
+				</Row>
+			</Действия>
+		</CatalogObject.Право>
+		<CatalogObject.Роли>
+			<Ref>31f22878-578f-11e9-9fc9-f079597092fe</Ref>
+			<DeletionMark>false</DeletionMark>
+			<Code>000000001</Code>
+			<Description>Кассир</Description>
+			<Права>
+				<Row>
+					<Право>31f22877-578f-11e9-9fc9-f079597092fe</Право>
+					<Значение>false</Значение>
+				</Row>
+			</Права>
+		</CatalogObject.Роли>
+		<CatalogObject.Роли>
+			<Ref>31f22879-578f-11e9-9fc9-f079597092fe</Ref>
+			<DeletionMark>false</DeletionMark>
+			<Code>000000002</Code>
+			<Description>Администратор</Description>
+			<Права>
+				<Row>
+					<Право>31f22877-578f-11e9-9fc9-f079597092fe</Право>
+					<Значение>true</Значение>
+				</Row>
+			</Права>
+		</CatalogObject.Роли>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>226bfd6d-db86-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>true</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>00000000-0000-0000-0000-000000000000</Parent>
+			<Code>00060    </Code>
+			<Description>Другие настройки</Description>
+			<ValueType>
+				<v8:Types/>
+			</ValueType>
+			<PredefinedDataName>ДругиеНастройки</PredefinedDataName>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>226bfd6e-db86-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>226bfd6d-db86-11e8-9f86-f079597092fe</Parent>
+			<Code>00015    </Code>
+			<Description>Основная дата начала отчетов</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:dateTime</v8:Type>
+				</v8:Types>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</ValueType>
+			<PredefinedDataName>ОсновнаяДатаНачалаОтчетов</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>226bfd6f-db86-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>226bfd6d-db86-11e8-9f86-f079597092fe</Parent>
+			<Code>00016    </Code>
+			<Description>Основной каталог файлов</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>200</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<PredefinedDataName>ОсновнойКаталогФайлов</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>226bfd70-db86-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>true</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>00000000-0000-0000-0000-000000000000</Parent>
+			<Code>00056    </Code>
+			<Description>Основные значения для подстановки в документы и справочники</Description>
+			<ValueType>
+				<v8:Types/>
+			</ValueType>
+			<PredefinedDataName>ОсновныеЗначенияДляПодстановки</PredefinedDataName>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>226bfd71-db86-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>true</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>226bfd70-db86-11e8-9f86-f079597092fe</Parent>
+			<Code>00229    </Code>
+			<Description>Прочие значения</Description>
+			<ValueType>
+				<v8:Types/>
+			</ValueType>
+			<PredefinedDataName>ПрочиеЗначения</PredefinedDataName>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2d7-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00232    </Code>
+			<Description>PASSWORD</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<PredefinedDataName>Сайт_Пароль</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2d8-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00234    </Code>
+			<Description>CRYPTO_KEY</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<PredefinedDataName>CRYPTO_KEY</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2d9-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00231    </Code>
+			<Description>LOGIN</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<PredefinedDataName>Сайт_Логин</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2da-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00233    </Code>
+			<Description>PACKAGE_MOVIES_SIZE</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:decimal</v8:Type>
+				</v8:Types>
+				<v8:NumberQualifiers>
+					<v8:Digits>3</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</ValueType>
+			<PredefinedDataName>PACKAGE_MOVIES_SIZE</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2db-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>true</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>00000000-0000-0000-0000-000000000000</Parent>
+			<Code>00230    </Code>
+			<Description>ВнешниеНастройки</Description>
+			<ValueType>
+				<v8:Types/>
+			</ValueType>
+			<PredefinedDataName>ВнешниеНастройки</PredefinedDataName>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2dc-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00237    </Code>
+			<Description>BASE_URL</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<PredefinedDataName>BASE_URL</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2dd-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00235    </Code>
+			<Description>CRYPTO_IV</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<PredefinedDataName>CRYPTO_IV</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>dc6df2de-db8d-11e8-9f86-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00236    </Code>
+			<Description>CASH_DESK_ID</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:decimal</v8:Type>
+				</v8:Types>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</ValueType>
+			<PredefinedDataName>CASH_DESK_ID</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>5fc96673-dc23-11e8-9f87-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>226bfd70-db86-11e8-9f86-f079597092fe</Parent>
+			<Code>00238    </Code>
+			<Description>ПринтерПоУмолчанию</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>92d8cf39-dc40-11e8-9f87-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00239    </Code>
+			<Description>RESPONSE_TIME_OUT</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:decimal</v8:Type>
+				</v8:Types>
+				<v8:NumberQualifiers>
+					<v8:Digits>6</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>92d8cf3a-dc40-11e8-9f87-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00240    </Code>
+			<Description>RESPONSE_WAIT_STEP</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:decimal</v8:Type>
+				</v8:Types>
+				<v8:NumberQualifiers>
+					<v8:Digits>6</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>38fc841b-de96-11e8-9f8b-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00241    </Code>
+			<Description>LOCAL_SERVISE_BLOCED</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:boolean</v8:Type>
+				</v8:Types>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>38fc841c-de96-11e8-9f8b-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00242    </Code>
+			<Description>WEB_SERVISE_BLOCED</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:boolean</v8:Type>
+				</v8:Types>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>b789bbcf-e364-11e8-9f8e-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00243    </Code>
+			<Description>RESERVE_PRICE</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:decimal</v8:Type>
+				</v8:Types>
+				<v8:NumberQualifiers>
+					<v8:Digits>5</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>063411e4-0b52-11e9-9f9f-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00238    </Code>
+			<Description>LOGG_ON</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:boolean</v8:Type>
+				</v8:Types>
+			</ValueType>
+			<PredefinedDataName>LOGG_ON</PredefinedDataName>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>7cc351f1-4015-11e9-9fb5-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00244    </Code>
+			<Description>SMS_LOGIN</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>7cc351f2-4015-11e9-9fb5-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>dc6df2db-db8d-11e8-9f86-f079597092fe</Parent>
+			<Code>00245    </Code>
+			<Description>SMS_PASSWORD</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:string</v8:Type>
+				</v8:Types>
+				<v8:StringQualifiers>
+					<v8:Length>300</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>31f22876-578f-11e9-9fc9-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>31f2287a-578f-11e9-9fc9-f079597092fe</Parent>
+			<Code>00246    </Code>
+			<Description>Роль</Description>
+			<ValueType>
+				<v8:Types xmlns="">
+					<v8:Type>CatalogRef.Роли</v8:Type>
+				</v8:Types>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>31f2287a-578f-11e9-9fc9-f079597092fe</Ref>
+			<IsFolder>true</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>00000000-0000-0000-0000-000000000000</Parent>
+			<Code>00247    </Code>
+			<Description>Права</Description>
+			<ValueType>
+				<v8:Types/>
+			</ValueType>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>7c0a7641-59d4-11e9-9fca-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>226bfd6d-db86-11e8-9f86-f079597092fe</Parent>
+			<Code>00249    </Code>
+			<Description>ЗакрыватьПрограммуПриВыходеИзАРМКассира</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:boolean</v8:Type>
+				</v8:Types>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+		<ChartOfCharacteristicTypesObject.НастройкиПользователей>
+			<Ref>7c0a7640-59d4-11e9-9fca-f079597092fe</Ref>
+			<IsFolder>false</IsFolder>
+			<DeletionMark>false</DeletionMark>
+			<Parent>226bfd6d-db86-11e8-9f86-f079597092fe</Parent>
+			<Code>00248    </Code>
+			<Description>ЗапускатьАРМКассираПриСтартеПрограммы</Description>
+			<ValueType>
+				<v8:Types xmlns:p1="http://www.w3.org/2001/XMLSchema">
+					<v8:Type>p1:boolean</v8:Type>
+				</v8:Types>
+			</ValueType>
+			<ИмяВнешнейНастройки/>
+		</ChartOfCharacteristicTypesObject.НастройкиПользователей>
+	</V8Exch:Data>
+</V8Exch:_1CV8DtUD>

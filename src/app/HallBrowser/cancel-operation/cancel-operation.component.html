@@ -1,0 +1,55 @@
+<p class="my-0 py-0" >
+  <button class="btn btn-dark my-0" (click)='Resete()'></button>
+  <messages [historyLenth]=5 class="my-0"> </messages>
+</p>
+
+<form class="ml-1" [formGroup]='form'>
+  <div class="input-group input-group-sm my-2">
+    <input formControlName='phone' placeholder="тел." type="text" (focus)=InputOnFocus() class="form-control" [ngClass]="{'bg-danger' : !phone.valid && 
+                                      (
+                                       action==FORM_ACTIONS.searchByPhone  
+
+                                      )}">
+    <div class="input-group-append">
+      <button class="btn" [ngClass]="{'btn-danger': !GetFormValidStatus() && action == FORM_ACTIONS.searchByPhone,
+                          'btn-dark'  :  GetFormValidStatus() || action != FORM_ACTIONS.searchByPhone}"
+        type="button" (click)=SearchByPhone()><i class="fa fa-search"></i></button>
+    </div>
+
+
+  </div>
+
+  <div class="input-group input-group-sm my-2">
+    <input placeholder="номер брони" formControlName='secretCode' type="text" (focus)=InputOnFocus() class="form-control"
+      [ngClass]="{'bg-danger' : !secretCode.valid && 
+                                     (
+                                      
+                                      action==FORM_ACTIONS.search 
+                                     )}">
+
+
+    <div class="input-group-append">
+      <button class="btn" [ngClass]="{'btn-danger': !GetFormValidStatus() && action == FORM_ACTIONS.search,
+                          'btn-dark'  :  GetFormValidStatus() || action != FORM_ACTIONS.search}"
+        type="button" (click)=Search()><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+
+
+  <div class="input-group input-group-sm my-2">
+    <div class="input-group-prepend">
+      <button class="btn" [ngClass]="{'btn-danger': !confirm.valid && action==FORM_ACTIONS.confirm,
+                'btn-dark'  :  confirm.valid || action != FORM_ACTIONS.confirm}"
+        type="button" (click)=Confirm(true)><i class="fa fa-trash mr-2"></i><i class="fa fa-cc-visa"></i>
+      </button>
+    </div>
+    <input placeholder="подтвердить?" formControlName='confirm' type="text" (focus)=InputOnFocus() class="form-control"
+      [ngClass]="{'bg-danger' : !confirm.valid && action==FORM_ACTIONS.confirm}">
+
+    <div class="input-group-append">
+      <button class="btn" [ngClass]="{'btn-danger': !confirm.valid && action==FORM_ACTIONS.confirm,
+                          'btn-dark'  :  confirm.valid || action != FORM_ACTIONS.confirm}"
+        type="button" (click)=Confirm(false)><i class="fa fa-trash">  </i></button>
+    </div>
+  </div>
+</form>

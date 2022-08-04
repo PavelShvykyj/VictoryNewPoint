@@ -1,0 +1,32 @@
+<ng-container *ngIf="order$ | async as currentorder; else emptyorder" >
+<div class="card mt-2">
+  <div class="card-header py-2 text-white bg-secondary">
+      Shop order :
+  </div>      
+  <ul class="list-group ">
+      <li  *ngFor="let id of currentorder.ids" class="list-group-item border border-secondary p-1">    
+        <div class="input-group input-group-sm ">
+          <div class="input-group-prepend">
+            <fa-icon class="input-group-text" [icon]="icones[currentorder.items[id].icon_name]"></fa-icon>
+            <button class="btn btn-outline-dark" type="button" (click)="onQuantityChange(id,-1)"><i class="fa fa-minus"></i></button>
+          </div>
+          <input type="text" class="form-control text-center text-danger font-weight-bold" disabled [value]="currentorder.items[id].quantity">
+          <div class="input-group-append">
+            <button class="btn btn-outline-dark" type="button" (click)="onQuantityChange(id,1)"><i class="fa fa-plus"></i></button>
+          </div>
+        
+        </div>
+      </li> 
+  </ul>       
+  <div class="card-footer text-white bg-secondary d-flex justify-content-between">
+    <button class="btn btn-sm btn-dark" (click)="onCancel()"> Cancel </button>  
+    <button class="btn btn-sm btn-dark" (click)="onShopSale()"> Sale </button>  
+  </div>
+</div> 
+</ng-container> 
+
+<ng-template #emptyorder>
+  <div> No Order found </div>
+</ng-template>
+
+

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings xmlns="http://v8.1c.ru/8.3/config/merge/settings" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" platformVersion="8.3.8">
+	<MainConfiguration>
+		<Name>Конфигурация</Name>
+	</MainConfiguration>
+	<SecondConfiguration>
+		<Name>Конфигурация</Name>
+	</SecondConfiguration>
+	<Parameters>
+		<ConfigurationsRelation>ConfigurationsNotRelated</ConfigurationsRelation>
+		<AllowMainConfigurationObjectDeletion>false</AllowMainConfigurationObjectDeletion>
+		<CopyObjectsMode>false</CopyObjectsMode>
+	</Parameters>
+	<Objects>
+		<Object fullName="Обработка.Front.Форма.Форма">
+			<Properties>
+				<Property name="Форма">
+					<MergeRule>GetFromSecondConfiguration</MergeRule>
+					<Module>
+						<Methods>
+							<MainArea>
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</MainArea>
+							<Method name="SaveLogg">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="TakeLoggFiles">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+								<Patch>@@ -1,1 +1,29 @@
+ 
++Функция TakeLoggFiles(takeLogFiles,skipLogFiles) Экспорт
++	Каталог = ПолучитьРабочийКаталог();
++	Каталог = Каталог+"\log";
++	МассивФайлов = НайтиФайлы(Каталог,"*.txt");
++	МассивЛогов = Новый Массив;
++	ПолучитьФайлов   = Число(takeLogFiles);
++	ПропуститьФайлов = Число(skipLogFiles);
++	ВсегоФайлов = МассивФайлов.Количество();
++	Если ПропуститьФайлов &gt;= ВсегоФайлов Тогда
++		Возврат Новый Массив;
++	КонецЕсли;
++	
++	Если ПропуститьФайлов+ПолучитьФайлов &gt; ВсегоФайлов Тогда               
++		ПолучитьФайлов = ВсегоФайлов - ПропуститьФайлов;
++	КонецЕсли;	
++	
++	МаксЦикл = ПропуститьФайлов+ПолучитьФайлов-1;
++	
++	Для Сч = ПропуститьФайлов По МаксЦикл Цикл
++		Файл = МассивФайлов[Сч];
++		Текст = Новый ТекстовыйДокумент();
++		Текст.Прочитать(Файл.ПолноеИмя);
++		МассивЛогов.Добавить(Текст.ПолучитьСтроку(1));
++	КонецЦикла;	
++	
++	Возврат МассивЛогов;
++	
++КонецФункции	
+</Patch>
+							</Method>
+							<Method name="URLПриИзменении">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ДействияФормыИнжектировать1С">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ДействияФормыКасоовыйОтчет">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ДействияФормыОбновить">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ДействияФормыОбновитьДанные1С">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="Инжектировать1СВСкрипт">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ПерейтиПоАдресу">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ПолучитьРабочийКаталог">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ПолучитьУРЛ">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="ПриОткрытии">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="СобытиеНТМЛ">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="СобытиеОт1СНажатие">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+							<Method name="СтраницаХТМЛДокументСформирован">
+								<MergeRule>GetFromSecondConfiguration</MergeRule>
+							</Method>
+						</Methods>
+					</Module>
+				</Property>
+			</Properties>
+		</Object>
+	</Objects>
+</Settings>

@@ -1,0 +1,7 @@
+<ng-container *ngIf="total$ | async as total">
+  <div *ngIf="total!=0" class="card mt-2">
+    <div class="card-header py-2 text-white bg-secondary">
+        Shop total : {{total}}грн.
+    </div>  
+  </div>  
+</ng-container>  

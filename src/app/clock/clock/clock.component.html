@@ -1,0 +1,9 @@
+<!-- <div class="card text-danger bg-light">
+  <div class="card-body">
+    <h5 class="card-title text-center"> {{ clock$ | async | date  : 'hh:mm:ss'}} </h5>
+  </div>
+</div> -->
+
+<div class="alert p-0 m-0" role="alert text-light">
+  {{ clock$ | async | date  : 'HH:mm:ss'}}
+</div>

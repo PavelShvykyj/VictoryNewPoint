@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+body {background-color: #F8F8FF;
+      padding: 10px;       
+     }
+
+
+    @media print {
+        .printable {
+            display: block !important;
+        }
+        .unprintable {
+            display: none !important;
+        }
+    }
+
+    @page  {
+        size: 60cm 50cm;  /* width height */
+        /*margin: 0.2cm */
+    }
+
+    @media screen {
+      .printable {
+          display: none !important;
+      }
+      .unprintable {
+            display: block;
+        }
+  
+}     

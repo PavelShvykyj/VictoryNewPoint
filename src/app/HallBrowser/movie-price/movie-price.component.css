@@ -1,0 +1,23 @@
+.col-header{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 2px;
+    background-color: red;
+}
+
+.categoryTicketName {
+    padding-left: 10px;
+    padding-right: 5px;
+    font-style: italic;
+    font-weight: 200;
+    color: grey;  
+}
+
+.categoryTicketPrice {
+    font-weight: 600;
+    color: brown;
+}
+
+.separate {
+    border-top: 2px solid red
+}

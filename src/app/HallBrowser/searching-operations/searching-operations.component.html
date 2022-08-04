@@ -1,0 +1,53 @@
+<p>
+  <button class="btn btn-dark"  (click)='Resete()'></button>
+</p>
+
+<form class="ml-1" [formGroup]='form'>
+  <div class="input-group input-group-sm my-2">
+    <input formControlName='phone' 
+           placeholder="тел." 
+           type="text"
+           (focus)=InputOnFocus()
+           class="form-control"
+           [ngClass]="{'bg-danger' : !phone.valid && 
+                                      (
+                                       action==FORM_ACTIONS.searchByPhone  
+
+                                      )}">
+    <div class="input-group-append">
+      <button class="btn"
+              [ngClass]="{'btn-danger': !GetFormValidStatus() && action == FORM_ACTIONS.searchByPhone,
+                          'btn-dark'  :  GetFormValidStatus() || action != FORM_ACTIONS.searchByPhone}"
+              type="button"
+              (click)=SearchByPhone() ><i class="fa fa-search"></i></button>
+    </div>
+                                  
+
+  </div>
+
+  <div class="input-group input-group-sm my-2">
+    <input placeholder="номер брони"
+           formControlName='secretCode'
+           type="text"
+           (focus)=InputOnFocus()
+           class="form-control"
+           [ngClass]="{'bg-danger' : !secretCode.valid && 
+                                     (
+                                      
+                                      action==FORM_ACTIONS.search 
+                                     )}">
+    
+    
+    <div class="input-group-append">
+      <button class="btn"
+              [ngClass]="{'btn-danger': !GetFormValidStatus() && action == FORM_ACTIONS.search,
+                          'btn-dark'  :  GetFormValidStatus() || action != FORM_ACTIONS.search}"
+              type="button"
+              (click)=Search() ><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+
+</form>
+
+
+
